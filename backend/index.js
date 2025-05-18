@@ -9,9 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-})
+app.use(express.json()); // Middleware to parse incoming JSON requests. It makes req.body contain the parsed data.
 
 app.use("/api/auth", authRoutes)
 
