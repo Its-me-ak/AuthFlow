@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateTokensAndSetCookies } from "../utils/generateTokenAndSetCookie.js";
-import { sendVerificationEmail } from "../mailtrap/email.js";
+import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/email.js";
 
 
 // signup
@@ -36,10 +36,49 @@ export const signup = async (req, res) => {
         // JWT
         generateTokensAndSetCookies(res, user._id)
 
-       await sendVerificationEmail(user.email, verificationToken)
+        await sendVerificationEmail(user.email, verificationToken)
 
         res.status(201).json({
             message: "User created successfully", user: {
+                ...user._doc,
+                password: undefined,
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
+// Verify email
+export const verifyEmail = async (req, res) => {
+    const { verificationCode } = req.body;
+    try {
+        // Validate verification token
+        if (!verificationCode) {
+            return res.status(400).json({ message: "Verification code is required" });
+        }
+
+        // Find user by verification token
+        const user = await User.findOne({
+            verificationToken: verificationCode,
+            verificationTokenExpiresAt: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired verification code" });
+        }
+
+        // Update user to mark as verified
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpiresAt = undefined;
+        await user.save();
+
+        // Send welcome email
+        await sendWelcomeEmail(user.email, user.name);
+
+        res.status(200).json({
+            message: "Email verified successfully", user: {
                 ...user._doc,
                 password: undefined,
             }
