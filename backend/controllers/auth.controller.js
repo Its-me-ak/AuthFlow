@@ -94,5 +94,10 @@ export const login = async (req, res) => {
 
 // logout
 export const logout = async (req, res) => {
-
+    res.status(200)
+        .clearCookie('accessToken')
+        .clearCookie('refreshToken')
+        .json({
+            message: "User logged successfully"
+        })
 }
