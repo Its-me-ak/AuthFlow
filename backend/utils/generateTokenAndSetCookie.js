@@ -5,7 +5,7 @@ export const generateTokensAndSetCookies = (res, userId) => {
     const accessToken = jwt.sign(
         { userId },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '1h' } // 1 hour
+        { expiresIn: '15m' } //15 minutes
     );
 
     // Create Refresh Token (long-lived)
