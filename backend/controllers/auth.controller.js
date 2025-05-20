@@ -14,6 +14,20 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Invalid email format' });
+        }
+
+        // Validate password complexity
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({
+                error: 'Password must contain at least one uppercase letter, one lowercase letter, one number, one special character and 8 characters long',
+            });
+           }
+
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -90,7 +104,49 @@ export const verifyEmail = async (req, res) => {
 
 // login
 export const login = async (req, res) => {
-}
+    const { email, password } = req.body;
+
+    try {
+        // Validate input
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+
+        // Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        // Check password
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatch) {
+            return res.status(400).json({ message: "Password is incorrect" });
+        }
+
+        // Check if verified
+        if (!user.isVerified) {
+            return res.status(401).json({ message: "Please verify your email before logging in" });
+        }
+
+        // Generate tokens and set cookies
+        generateTokensAndSetCookies(res, user._id);
+        user.lastLogin = new Date()
+        await user.save()
+
+        res.status(200).json({
+            message: "Login successful",
+            user: {
+                ...user._doc,
+                password: undefined,
+            },
+        });
+    } catch (error) {
+        console.log("Error in Login", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 // logout
 export const logout = async (req, res) => {
