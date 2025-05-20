@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import crypto from 'crypto'
+import jwt from "jsonwebtoken";
 import { generateTokensAndSetCookies } from "../utils/generateTokenAndSetCookie.js";
 import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../mailtrap/email.js";
 
@@ -46,14 +47,16 @@ export const signup = async (req, res) => {
             verificationToken,
             verificationTokenExpiresAt: Date.now() + 15 * 60 * 1000, // Token valid for 15 minutes
         });
-        // Save user to database
-        await user.save();
+
         // JWT
-        generateTokensAndSetCookies(res, user._id)
+        const { accessToken, refreshToken } = generateTokensAndSetCookies(res, user._id);
+        user.refreshToken = refreshToken;
+
+        await user.save();
 
         await sendVerificationEmail(user.email, verificationToken)
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "User created successfully", user: {
                 ...user._doc,
                 password: undefined,
@@ -92,7 +95,7 @@ export const verifyEmail = async (req, res) => {
         // Send welcome email
         await sendWelcomeEmail(user.email, user.name);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Email verified successfully", user: {
                 ...user._doc,
                 password: undefined,
@@ -131,11 +134,12 @@ export const login = async (req, res) => {
         }
 
         // Generate tokens and set cookies
-        generateTokensAndSetCookies(res, user._id);
+        const { accessToken, refreshToken } = generateTokensAndSetCookies(res, user._id);
+        user.refreshToken = refreshToken;
         user.lastLogin = new Date()
         await user.save()
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Login successful",
             user: {
                 ...user._doc,
@@ -150,7 +154,7 @@ export const login = async (req, res) => {
 
 // logout
 export const logout = async (req, res) => {
-    res.status(200)
+    return res.status(200)
         .clearCookie('accessToken')
         .clearCookie('refreshToken')
         .json({
@@ -178,10 +182,49 @@ export const forgotPassword = async (req, res) => {
         // send email
         await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetToken}`)
 
-        res.status(200).json({ success: true, message: "Password reset email sent successfully" })
+        return res.status(200).json({ success: true, message: "Password reset email sent successfully" })
 
     } catch (error) {
         console.log("Error in forgot password", error);
         res.status(500).json({ message: error.message });
     }
 }
+
+// refresh access token
+// export const refreshAccessToken = async (req, res) => {
+//     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+//     if (!incomingRefreshToken) {
+//         return res.status(401).json({ message: "Refresh token not found" });
+//     }
+
+//     try {
+//         const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+//         console.log(decodedToken);
+
+//         const user = await User.findById(decodedToken?._id).select('+refreshToken');
+//         if (!user) {
+//             return res.status(401).json({ message: "User not found" });
+//         }
+//         console.log("User from DB:", user);
+//         console.log("DB refreshToken:", user?.refreshToken);
+
+//         // Verify refresh token matches the one stored in DB
+//         if (user.refreshToken !== incomingRefreshToken) {
+//             return res.status(401).json({ message: "Invalid refresh token" });
+//         }
+
+//         const options = {
+//             httpOnly: true,
+//             secure: true
+//         }
+//         const { accessToken, newRefreshToken } = generateTokensAndSetCookies(res, user._id)
+//         return res
+//             .status(200)
+//             .cookie("accessToken", accessToken, options)
+//             .cookie("refreshToken", newRefreshToken, options)
+//             .json({ accessToken, refreshToken: newRefreshToken }, "Access token refreshed successfully")
+//     } catch (error) {
+//         console.log("Error in refresh access token", error);
+//         res.status(500).json({ message: error.message });
+//     }
+// }

@@ -10,4 +10,6 @@ router.post("/logout", logout)
 router.post("/verify-email", verifyEmail)
 router.post("/forgot-password", forgotPassword)
 
+// router.get('/refresh-token', refreshAccessToken);
+
 export default router;
