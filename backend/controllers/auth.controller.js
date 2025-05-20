@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from 'crypto'
 import jwt from "jsonwebtoken";
 import { generateTokensAndSetCookies } from "../utils/generateTokenAndSetCookie.js";
-import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../mailtrap/email.js";
+import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail, sendResetSuccessEmail } from "../mailtrap/email.js";
 
 
 // signup
@@ -190,6 +190,36 @@ export const forgotPassword = async (req, res) => {
     }
 }
 
+// reset password
+export const resetPassword = async (req, res) => {
+    const { token } = req.params
+    const { password } = req.body
+
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpiresAt: { $gt: Date.now() }
+        })
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired reset password token" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user.password = hashedPassword
+        user.resetPasswordToken = undefined
+        user.resetPasswordExpiresAt = undefined
+
+        await user.save()
+        await sendResetSuccessEmail(user.email)
+
+        return res.status(200).json({ success: true, message: "Password reset successfully" })
+
+    } catch (error) {
+        console.log("Error in reset password", error);
+        res.status(500).json({ message: error.message });
+    }
+}
 // refresh access token
 // export const refreshAccessToken = async (req, res) => {
 //     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
