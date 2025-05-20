@@ -1,7 +1,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import crypto from 'crypto'
 import { generateTokensAndSetCookies } from "../utils/generateTokenAndSetCookie.js";
-import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/email.js";
+import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../mailtrap/email.js";
 
 
 // signup
@@ -26,7 +27,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({
                 error: 'Password must contain at least one uppercase letter, one lowercase letter, one number, one special character and 8 characters long',
             });
-           }
+        }
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -147,7 +148,6 @@ export const login = async (req, res) => {
     }
 };
 
-
 // logout
 export const logout = async (req, res) => {
     res.status(200)
@@ -156,4 +156,32 @@ export const logout = async (req, res) => {
         .json({
             message: "User logged successfully"
         })
+}
+
+// forgot password
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
+        const resetToken = crypto.randomBytes(20).toString("hex")
+        const resetTokenExpiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
+
+        user.resetPasswordToken = resetToken
+        user.resetPasswordExpiresAt = resetTokenExpiresAt
+
+        await user.save()
+
+        // send email
+        await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetToken}`)
+
+        res.status(200).json({ success: true, message: "Password reset email sent successfully" })
+
+    } catch (error) {
+        console.log("Error in forgot password", error);
+        res.status(500).json({ message: error.message });
+    }
 }
