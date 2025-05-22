@@ -37,10 +37,10 @@ const PasswordCriteria = ({ password }) => {
                             <Check className='size-4 text-green-500 mr-2' />
                         ) :
                         (
-                            <X className='size-4 text-gray-500 mr-2' />
+                            <X className='size-4 text-gray-300 mr-2' />
                         )
                     }
-                    <span className={`${item.met ? 'text-green-500' : 'text-gray-400'}`}>
+                    <span className={`${item.met ? 'text-green-500' : 'text-gray-300'}`}>
                         {item.label}
                     </span>
                 </div>
@@ -59,6 +59,8 @@ const PasswordStrengthMeter = ({ password }) => {
         const hasLower = /[a-z]/.test(pass);
 
         const conditionsMet = [hasNumber, hasSymbol, hasUpper, hasLower].filter(Boolean).length;
+        console.log(conditionsMet);
+        
 
         if (pass.length >= 12 && conditionsMet === 4) return 5;
         if (hasLength && conditionsMet >= 3) return 4;
@@ -94,15 +96,15 @@ const PasswordStrengthMeter = ({ password }) => {
     return (
         <div className='mt-2'>
             <div className='flex justify-between items-center mb-1'>
-                <span className='text-xs text-gray-400'>Password Strength</span>
-                <span className='text-xs text-gray-400'>{(strengthLabel)}</span>
+                <span className='text-xs text-gray-300'>Password Strength</span>
+                <span className='text-xs text-gray-300'>{(strengthLabel)}</span>
             </div>
 
             <div className='flex gap-1'>
                 {[...Array(5)].map((_, index) => (
                     <div
                         key={index}
-                        className={`h-1 w-full flex-1 rounded-full transition-colors duration-300 ${index < strengthLevel ? getColorByLevel(strengthLevel) : 'bg-gray-500'
+                        className={`h-1 w-full flex-1 rounded-full transition-colors duration-300 ${index < strengthLevel ? getColorByLevel(strengthLevel) : 'bg-gray-400'
                             }`}
                     />
                 ))}
