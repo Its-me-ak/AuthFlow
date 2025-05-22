@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion, scale } from "motion/react"
+import { motion, } from "motion/react"
 import Input from '../components/Input'
 import { User, Mail, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
