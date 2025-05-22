@@ -3,6 +3,7 @@ import { motion, scale } from "motion/react"
 import Input from '../components/Input'
 import { User, Mail, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import PasswordStrengthMeter from '../components/PasswordStrengthMeter'
 
 const SignUpPage = () => {
   const [name, setName] = useState('')
@@ -32,7 +33,7 @@ const SignUpPage = () => {
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            autocomplete="off"
+            autoComplete="off"
           />
           <Input
             icon={Mail}
@@ -41,7 +42,7 @@ const SignUpPage = () => {
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            autocomplete="off"
+            autoComplete="off"
           />
           <Input
             icon={Lock}
@@ -50,9 +51,10 @@ const SignUpPage = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autocomplete="off"
+            autoComplete="off"
           />
           {/* Password strength meter */}
+          <PasswordStrengthMeter password={password}/>
 
           <motion.button
             type="submit"

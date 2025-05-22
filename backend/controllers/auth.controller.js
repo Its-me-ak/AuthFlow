@@ -23,7 +23,7 @@ export const signup = async (req, res) => {
         }
 
         // Validate password complexity
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_^]{8,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({
                 error: 'Password must contain at least one uppercase letter, one lowercase letter, one number, one special character and 8 characters long',
