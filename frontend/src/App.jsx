@@ -4,6 +4,7 @@ import FloatingShape from './components/FloatingShape'
 import AppRoutes from './routes/AppRoutes'
 import { useAuthStore } from './store/authStore'
 import { useEffect } from 'react'
+import LoadingSpinner from './components/LoadingSoinner'
 
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
   useEffect(() => {
       checkAuth()
   }, [ checkAuth ])
+
+  if(isCheckingAuth) return <LoadingSpinner/>
 
   console.log("isAuthenticated:", isAuthenticated);
   console.log("user:", user);
