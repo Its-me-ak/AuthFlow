@@ -2,9 +2,20 @@ import { Toaster } from 'react-hot-toast'
 import './App.css'
 import FloatingShape from './components/FloatingShape'
 import AppRoutes from './routes/AppRoutes'
+import { useAuthStore } from './store/authStore'
+import { useEffect } from 'react'
+
 
 function App() {
+  const { checkAuth, isCheckingAuth, isAuthenticated, user } = useAuthStore()
 
+  useEffect(() => {
+      checkAuth()
+  }, [ checkAuth ])
+
+  console.log("isAuthenticated:", isAuthenticated);
+  console.log("user:", user);
+  
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden'>
       <FloatingShape color="bg-green-500" size= "w-64 h-64" top="-5%" left="10%" delay={0}/>
