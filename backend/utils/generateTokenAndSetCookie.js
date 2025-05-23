@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 export const generateTokensAndSetCookies = (res, userId) => {
     // Create Access Token (short-lived)

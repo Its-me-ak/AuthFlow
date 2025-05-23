@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion } from "motion/react"
 import { Loader } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../store/authStore'
+import toast from 'react-hot-toast'
 
 const EmailVerificationPage = () => {
-    const isLoading = false
+    const {verifyEmail, error, isLoading} = useAuthStore()
     const [code, setCode] = useState([
         '',
         '',
@@ -40,18 +42,22 @@ const EmailVerificationPage = () => {
         }
     };
     
-
-
     const handleKeyDown = (index, e) => {
         if (e.key === 'Backspace' && !code[index] && index > 0) {
             inputRef.current[index - 1]?.focus()
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const verificationCode = code.join('')
-        console.log("Verification Code submitted:", verificationCode);
+        try {
+          await verifyEmail(verificationCode)
+            navigate('/')
+            toast.success('Email verified successfully')
+        } catch (error) {
+            console.error('Error verifying email:', error)
+        }
         
     }
 
@@ -93,6 +99,7 @@ const EmailVerificationPage = () => {
                             />
                         ))}
                     </div>
+                    {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 
                     <motion.button
                         type="submit"
@@ -105,7 +112,7 @@ const EmailVerificationPage = () => {
                         disabled={isLoading}
                     >
                         {
-                            isLoading ? <Loader className='w-6 h-6 animate-spin mx-auto' /> : "Verify Email"
+                            isLoading ? <Loader className='animate-spin mx-auto' size={22} /> : "Verify Email"
                         }
                     </motion.button>
                 </form>

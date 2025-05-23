@@ -59,8 +59,6 @@ const PasswordStrengthMeter = ({ password }) => {
         const hasLower = /[a-z]/.test(pass);
 
         const conditionsMet = [hasNumber, hasSymbol, hasUpper, hasLower].filter(Boolean).length;
-        console.log(conditionsMet);
-        
 
         if (pass.length >= 12 && conditionsMet === 4) return 5;
         if (hasLength && conditionsMet >= 3) return 4;
