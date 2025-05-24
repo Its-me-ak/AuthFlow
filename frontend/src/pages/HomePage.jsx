@@ -22,8 +22,8 @@ const HomePage = () => {
       exit={{ opacity: 0, scale: 0.9 }}
       className="max-w-md w-full mx-auto mt-10 p-8 bg-gray-900/90 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl border border-gray-800"
     >
-      <h1 className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-        Welcome to the App
+      <h1 className="text-3xl font-bold mb-4 text-center bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+        Welcome to AuthFlow
       </h1>
       <div className="space-y-6">
         <motion.div

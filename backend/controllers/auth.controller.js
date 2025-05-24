@@ -156,7 +156,6 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
     return res.status(200)
         .clearCookie('accessToken')
-        .clearCookie('refreshToken')
         .json({
             message: "User logged successfully"
         })

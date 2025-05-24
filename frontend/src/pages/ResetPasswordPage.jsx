@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import motion from "motion/react";
+import {motion} from "motion/react";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/Input";
-import { Mail, Lock, Loader } from "lucide-react";
+import { Lock, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ResetPasswordPage = () => {
