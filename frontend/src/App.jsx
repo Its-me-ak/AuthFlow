@@ -8,7 +8,7 @@ import LoadingSpinner from './components/LoadingSoinner'
 
 
 function App() {
-  const { checkAuth, isCheckingAuth, isAuthenticated, user } = useAuthStore()
+  const { checkAuth, isCheckingAuth } = useAuthStore()
 
   useEffect(() => {
       checkAuth()

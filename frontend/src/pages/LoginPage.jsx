@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, } from "motion/react"
 import Input from '../components/Input'
 import { Mail, Lock, Loader } from 'lucide-react'
@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { login, isLoading, error } = useAuthStore()
+  const { login, isLoading, error, clearError } = useAuthStore()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -22,6 +22,10 @@ const LoginPage = () => {
       console.error('Error logging in:', error)
     }
   }
+
+  useEffect(() => {
+    clearError()
+  }, [clearError])
 
   return (
     <motion.div

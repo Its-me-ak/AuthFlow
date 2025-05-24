@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Input from "../components/Input";
 import { User, Mail, Lock, Loader } from "lucide-react";
@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import Button from "../components/Button";
 
 const SignUpPage = () => {
-  const { signup, error, isLoading } = useAuthStore();
+  const { signup, error, isLoading  ,clearError} = useAuthStore();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +23,10 @@ const SignUpPage = () => {
       console.error("Error signing up:", error);
     }
   };
+
+  useEffect(() => {
+    clearError()
+  }, [clearError])
 
   return (
     <motion.div
@@ -68,7 +72,9 @@ const SignUpPage = () => {
           )}
           {/* Password strength meter */}
           <PasswordStrengthMeter password={password} />
-          <Button type="submit" isLoading={isLoading}/>
+          <Button type="submit" isLoading={isLoading}>
+            Sign Up 
+          </Button>
         </form>
       </div>
       <div className="px-8 py-4 bg-gray-900/50 flex justify-center">

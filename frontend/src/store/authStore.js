@@ -9,6 +9,7 @@ export const useAuthStore = create((set) => ({
   user: null,
   isAuthenticated: false,
   error: null,
+  clearError: () => set({ error: null }),
   isLoading: false,
   isCheckingAuth: true,
   message:null,
@@ -46,6 +47,7 @@ export const useAuthStore = create((set) => ({
         user: response.data.user,
         isAuthenticated: true,
         isLoading: false,
+        error: null
       });
     } catch (error) {
       set({
