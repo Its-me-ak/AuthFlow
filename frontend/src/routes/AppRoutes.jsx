@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import EmailVerificationPage from "../pages/EmailVerificationPage";
 import { useAuthStore } from "../store/authStore";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 
 // proctect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +53,14 @@ const AppRoutes = () => (
       element={
         <RedirectAuthenticatedUser>
           <EmailVerificationPage />
+        </RedirectAuthenticatedUser>
+      }
+    />
+    <Route
+      path="/forgot-password"
+      element={
+        <RedirectAuthenticatedUser>
+          <ForgotPasswordPage />
         </RedirectAuthenticatedUser>
       }
     />
