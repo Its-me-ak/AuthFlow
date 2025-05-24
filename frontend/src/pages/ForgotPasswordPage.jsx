@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { useAuthStore } from "../store/authStore";
 import Input from '../components/Input'
-import {Loader, Mail , ArrowLeft} from "lucide-react"
+import  {Mail , ArrowLeft} from "lucide-react"
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -46,18 +47,7 @@ const ForgotPasswordPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200"
-              type="submit"
-            >
-              {isLoading ? (
-                <Loader className="size-6 animate-spin mx-auto" />
-              ) : (
-                "Send Reset Link"
-              )}
-            </motion.button>
+           <Button type="submit" isLoading={isLoading}>Send Reset Link</Button>
           </form>
         ) : (
           <div className="text-center">

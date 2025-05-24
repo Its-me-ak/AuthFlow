@@ -4,6 +4,7 @@ import Input from '../components/Input'
 import { Mail, Lock, Loader } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import Button from '../components/Button'
 
 
 
@@ -65,22 +66,9 @@ const LoginPage = () => {
             <p className="text-red-500 text-sm mt-2 font-medium">{error}</p>
           )}
 
-          <motion.button
-            type="submit"
-            className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white 
-          font-bold rounded-lg shadow-lg hover:from-green-600
-          hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-           focus:ring-offset-gray-900 transition duration-200"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader className="w-6 h-6 animate-spin mx-auto" />
-            ) : (
-              "Login"
-            )}
-          </motion.button>
+        <Button type='submit' isLoading={isLoading}>
+          Login
+        </Button>
         </form>
       </div>
       <div className="px-8 py-4 bg-gray-900/50 flex justify-center">
