@@ -19,7 +19,7 @@ A project by [Its-me-ak](https://github.com/Its-me-ak)
 
 This project utilizes a modern tech stack to provide a robust authentication flow.
 
-**Homepage:** [https://auth-flow-lake.vercel.app](https://auth-flow-lake.vercel.app)
+**Homepage:** [https://authflow-wt2e.onrender.com/](https://authflow-wt2e.onrender.com/)
 
 ## 🚀 Installation
 
