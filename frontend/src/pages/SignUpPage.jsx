@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import Button from "../components/Button";
 
 const SignUpPage = () => {
-  const { signup, error, isLoading  ,clearError} = useAuthStore();
+  const { signup, error, isLoading } = useAuthStore();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,10 +23,6 @@ const SignUpPage = () => {
       console.error("Error signing up:", error);
     }
   };
-
-  useEffect(() => {
-    clearError()
-  }, [clearError])
 
   return (
     <motion.div

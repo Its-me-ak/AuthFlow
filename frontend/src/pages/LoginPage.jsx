@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { login, isLoading, error, clearError } = useAuthStore()
+  const { login, isLoading, error } = useAuthStore()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -22,10 +22,6 @@ const LoginPage = () => {
       console.error('Error logging in:', error)
     }
   }
-
-  useEffect(() => {
-    clearError()
-  }, [clearError])
 
   return (
     <motion.div
