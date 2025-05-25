@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-"dev": "cross-env VITE_NODE_ENV=development nodemon backend/index.js",
-"start": "cross-env VITE_NODE_ENV=production node backend/index.js",
+    "dev": "cross-env VITE_NODE_ENV=development nodemon backend/index.js",
+    "start": "cross-env VITE_NODE_ENV=production node backend/index.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
@@ -21,7 +21,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mailtrap": "^4.1.0",
-    "mongoose": "^8.15.0"
+    "mongoose": "^8.15.0",
+    "resend": "^4.5.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",
