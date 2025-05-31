@@ -1,7 +1,9 @@
 import {create} from "zustand"
 import axios  from "axios"
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:8080/api/v1/auth" : "/api/v1/auth"
+const API_URL = import.meta.env.MODE === "development" 
+  ? "http://localhost:8080/api/v1/auth" 
+  : "https://www.authflow.xyz/api/v1/auth";
 
 axios.defaults.withCredentials = true
 
