@@ -66,7 +66,7 @@ Before you begin, ensure you have the following installed:
     *   Add the following variables, replacing the placeholders with your actual values:
 
         ```
-        VITE_NODE_ENV=development # or production
+        NODE_ENV=development # or production
         MONGODB_URI=<your_mongodb_connection_string>
         JWT_SECRET=<your_jwt_secret>
         # Add other necessary environment variables
