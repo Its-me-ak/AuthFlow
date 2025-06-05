@@ -22,7 +22,7 @@ const ResetPasswordPage = () => {
       return toast.error("Passwords do not match");
     }
     try {
-      await resetPassword(password, token);
+      await resetPassword(token, password);
       toast.success(
         "Password reset successfully, Redirecting to login page..."
       );
