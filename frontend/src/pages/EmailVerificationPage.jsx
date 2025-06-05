@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from "motion/react"
-import { Loader } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import toast from 'react-hot-toast'
+import Button from "../components/Button";
 
 const EmailVerificationPage = () => {
     const {verifyEmail, error, isLoading} = useAuthStore()

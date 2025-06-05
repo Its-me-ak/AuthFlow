@@ -6,14 +6,14 @@ import Button from "../components/Button";
 
 const HomePage = () => {
   const { logout, user } = useAuthStore();
-  
+
   const handleLogout = async () => {
     try {
-      await logout()
+      await logout();
     } catch (error) {
-      console.error('Error logging out:', error)
+      console.error("Error logging out:", error);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -69,9 +69,7 @@ const HomePage = () => {
         transition={{ delay: 0.6 }}
         className="mt-4"
       >
-        <Button
-        onClick={handleLogout}
-        >
+        <Button onClick={handleLogout}>
           Logout
         </Button>
       </motion.div>

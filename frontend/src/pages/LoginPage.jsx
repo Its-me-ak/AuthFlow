@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { motion, } from "motion/react"
 import Input from '../components/Input'
-import { Mail, Lock, Loader } from 'lucide-react'
+import { Mail, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import Button from '../components/Button'
