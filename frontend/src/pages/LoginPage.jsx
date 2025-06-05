@@ -1,27 +1,30 @@
-import React, { useState } from 'react'
-import { motion, } from "motion/react"
-import Input from '../components/Input'
-import { Mail, Lock } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useAuthStore } from '../store/authStore'
-import Button from '../components/Button'
-
-
+import React, { useState } from "react";
+import { motion } from "motion/react";
+import Input from "../components/Input";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+import Button from "../components/Button";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const { login, isLoading, error } = useAuthStore()
+  const { login, isLoading, error } = useAuthStore();
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await login(email, password)
+      await login(email, password);
     } catch (error) {
-      console.error('Error logging in:', error)
+      console.error("Error logging in:", error);
     }
-  }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   return (
     <motion.div
@@ -46,11 +49,13 @@ const LoginPage = () => {
           />
           <Input
             icon={Lock}
-            type="Password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            rightIcon={showPassword ? EyeOff : Eye}
+            onRightIconClick={togglePasswordVisibility}
             autoComplete="off"
           />
 
@@ -66,9 +71,9 @@ const LoginPage = () => {
             <p className="text-red-500 text-sm mt-2 font-medium">{error}</p>
           )}
 
-        <Button type='submit' isLoading={isLoading}>
-          Login
-        </Button>
+          <Button type="submit" isLoading={isLoading}>
+            Login
+          </Button>
         </form>
       </div>
       <div className="px-8 py-4 bg-gray-900/50 flex justify-center">
@@ -81,6 +86,6 @@ const LoginPage = () => {
       </div>
     </motion.div>
   );
-}
+};
 
-export default LoginPage
+export default LoginPage;

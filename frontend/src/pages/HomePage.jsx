@@ -5,7 +5,7 @@ import { formatDate } from "../utils/date";
 import Button from "../components/Button";
 
 const HomePage = () => {
-  const { logout, user } = useAuthStore();
+  const { logout, user, isLoading } = useAuthStore();
 
   const handleLogout = async () => {
     try {
@@ -69,7 +69,7 @@ const HomePage = () => {
         transition={{ delay: 0.6 }}
         className="mt-4"
       >
-        <Button onClick={handleLogout}>
+        <Button onClick={handleLogout} isLoading={isLoading}>
           Logout
         </Button>
       </motion.div>

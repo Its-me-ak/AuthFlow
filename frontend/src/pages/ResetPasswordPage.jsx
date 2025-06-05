@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import {motion} from "motion/react";
+import { motion } from "motion/react";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/Input";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import Button from "../components/Button";
 
@@ -11,6 +11,8 @@ const ResetPasswordPage = () => {
   const { resetPassword, isLoading, error, message } = useAuthStore();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { token } = useParams();
   const navigate = useNavigate();
 
@@ -32,6 +34,10 @@ const ResetPasswordPage = () => {
     }
   };
 
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword((prev) => !prev);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -46,29 +52,34 @@ const ResetPasswordPage = () => {
         <form onSubmit={handleSubmit}>
           <Input
             icon={Lock}
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="New Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="off"
             required
+            rightIcon={showPassword ? EyeOff : Eye}
+            onRightIconClick={togglePasswordVisibility}
           />
+
           <Input
             icon={Lock}
-            type="Password"
-            name="password"
-            placeholder="Conirm New Password"
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            placeholder="Confirm New Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             autoComplete="off"
             required
+            rightIcon={showConfirmPassword ? EyeOff : Eye}
+            onRightIconClick={toggleConfirmPasswordVisibility}
           />
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
-            <Button type="submit" isLoading={isLoading}>
-              Set New Password
-            </Button>
+          <Button type="submit" isLoading={isLoading}>
+            Set New Password
+          </Button>
         </form>
       </div>
     </motion.div>

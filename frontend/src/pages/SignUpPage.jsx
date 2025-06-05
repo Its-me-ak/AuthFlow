@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import Input from "../components/Input";
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { useAuthStore } from "../store/authStore";
@@ -12,6 +12,7 @@ const SignUpPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,6 +23,10 @@ const SignUpPage = () => {
     } catch (error) {
       console.error("Error signing up:", error);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -56,11 +61,13 @@ const SignUpPage = () => {
           />
           <Input
             icon={Lock}
-            type="Password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            rightIcon={showPassword ? EyeOff : Eye}
+            onRightIconClick={togglePasswordVisibility}
             autoComplete="off"
           />
           {error && (
@@ -69,7 +76,7 @@ const SignUpPage = () => {
           {/* Password strength meter */}
           <PasswordStrengthMeter password={password} />
           <Button type="submit" isLoading={isLoading}>
-            Sign Up 
+            Sign Up
           </Button>
         </form>
       </div>
