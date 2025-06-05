@@ -30,7 +30,7 @@ const ForgotPasswordPage = () => {
       className="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden"
     >
       <div className="p-8">
-        <div className="text-3xl font-bold text-center bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+        <div className="text-3xl font-bold text-center bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-5">
           Forgot Password
         </div>
         {!isSubmitted ? (
@@ -50,7 +50,7 @@ const ForgotPasswordPage = () => {
            <Button type="submit" isLoading={isLoading}>Send Reset Link</Button>
           </form>
         ) : (
-          <div className="text-center mt-6">
+          <div className="text-center">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
