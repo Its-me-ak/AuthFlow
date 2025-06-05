@@ -50,7 +50,7 @@ const ForgotPasswordPage = () => {
            <Button type="submit" isLoading={isLoading}>Send Reset Link</Button>
           </form>
         ) : (
-          <div className="text-center">
+          <div className="text-center mt-6">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
